@@ -19,7 +19,6 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
         firstMessage.writeBytes(req);
     }
 
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ctx.writeAndFlush(firstMessage);

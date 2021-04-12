@@ -20,10 +20,10 @@ public class TimeServer {
 
     public static void main(String[] args) throws Exception {
         int port = 8080;
-        if (args != null && args.length > 0){
+        if (args != null && args.length > 0) {
             try {
                 port = Integer.valueOf(args[0]);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 // 使用默认值
             }
         }
@@ -37,16 +37,16 @@ public class TimeServer {
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
         try {
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap.group(bossGroup, workGroup)
-                .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, 1024)
-                .childHandler(new ChildChannelHandler());
-        // 绑定端口，同步等待成功
-        ChannelFuture f = serverBootstrap.bind(port).sync();
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .childHandler(new ChildChannelHandler());
+            // 绑定端口，同步等待成功
+            ChannelFuture f = serverBootstrap.bind(port).sync();
 
-        // 等待服务器监听端口关闭
-        f.channel().closeFuture().sync();
+            // 等待服务器监听端口关闭
+            f.channel().closeFuture().sync();
         } finally {
             // 优雅退出，释放线程池资源
             bossGroup.shutdownGracefully();
@@ -54,8 +54,7 @@ public class TimeServer {
         }
     }
 
-    private class  ChildChannelHandler extends ChannelInitializer<SocketChannel> {
-
+    private class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
             socketChannel.pipeline().addLast(new TimeServerHandler());
